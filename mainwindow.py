@@ -16,6 +16,8 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.ui.dial.valueChanged.connect(self.set_hz)
+
         self.series = QtCharts.QLineSeries()
 
         self.chartView = QtCharts.QChartView()
@@ -49,6 +51,11 @@ class MainWindow(QMainWindow):
             s = self.plc.read_plc_string(db, offset, size)
 
         self.ui.lineEdit_nombre.setText(s)
+
+    @Slot(int)
+    def set_hz(self, value):
+        db, offset = 2, 30
+        self.plc.write_real(db, offset, value*0.0001 + 0.0001)
 
     def read_data(self):
         # contador variable from PLC
