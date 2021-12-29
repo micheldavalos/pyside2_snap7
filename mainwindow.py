@@ -7,11 +7,13 @@ from snap7_controller import Snap7
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        ui = Ui_MainWindow()
-        ui.setupUi(self)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
 
         self.plc = Snap7("192.168.0.254", 0, 0)
         self.__connect()
+
+        self.ui.pushButton_get_nombre.clicked.connect(self.get_nombre)
 
     def __connect(self):
         status = self.plc.connect()
@@ -20,10 +22,10 @@ class MainWindow(QMainWindow):
             QMessageBox.information(self, "Info", "Fail Connection")
 
     @Slot()
-    def get_nombre(self) -> str:
+    def get_nombre(self):
         s = ""
         if self.plc.status:
             db, offset, size = 2, 2, 12
             s = self.plc.read_plc_string(db, offset, size)
-            return s
-        return s
+
+        self.ui.lineEdit_nombre.setText(s)

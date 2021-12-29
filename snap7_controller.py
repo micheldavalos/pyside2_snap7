@@ -1,6 +1,7 @@
 import snap7
 import snap7.util as s7
 import logging
+
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 
