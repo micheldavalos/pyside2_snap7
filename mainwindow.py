@@ -1,5 +1,6 @@
 from PySide2.QtWidgets import QMainWindow, QMessageBox
-from PySide2.QtCore import Slot
+from PySide2.QtCore import Slot, Qt
+from PySide2.QtCharts import QtCharts
 from ui_mainwindow import Ui_MainWindow
 
 from apscheduler.schedulers.qt import QtScheduler
@@ -8,13 +9,24 @@ from snap7_controller import Snap7
 
 
 class MainWindow(QMainWindow):
+    x = 0
+
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.series = QtCharts.QLineSeries()
+
+        self.chartView = QtCharts.QChartView()
+        self.chartView.chart().addSeries(self.series)
+        self.chartView.chart().createDefaultAxes()
+        self.chartView.chart().axisX().setRange(0, self.x + 100)
+        self.chartView.chart().axisY().setRange(-1, 1)
+        self.chartView.show()
+
         self.scheduler = QtScheduler()
-        self.scheduler.add_job(self.read_data, 'interval', seconds=1)
+        self.scheduler.add_job(self.read_data, 'interval', seconds=0.1)
 
         self.plc = Snap7("192.168.0.254", 0, 0)
         self.__connect()
@@ -47,3 +59,12 @@ class MainWindow(QMainWindow):
         db, offset, size = 2, 34, 4
         value = self.plc.read_plc_real(db, offset, size)
         self.ui.lcdNumber.display(value)
+
+        # SineWave variable from PLC
+        db, offset, size = 2, 18, 4
+        value = self.plc.read_plc_real(db, offset, size)
+        self.series.append(self.x, value)
+
+        self.x = self.x + 1
+        if self.x > 100:
+            self.chartView.chart().axisX().setRange(0, self.x + 100)
