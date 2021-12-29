@@ -30,3 +30,10 @@ class Snap7:
         s = s7.get_string(data, 0, size)
         # logging.info(s)
         return s
+
+    def read_plc_int(self, db, offset, size):
+        data = self.client.db_read(db, offset, size)
+        value = s7.get_int(data, 0)
+        # print(contador)
+        # logging.info(contador)
+        return value

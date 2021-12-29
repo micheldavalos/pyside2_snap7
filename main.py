@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication
+from PySide2.QtWidgets import QApplication
 from mainwindow import MainWindow
 
 # Only needed for access to command line arguments
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     window.show()  # IMPORTANT!!!!! Windows are hidden by default.
 
     # Start the event loop.
-    app.exec()
+    app.exec_()
 
     # Your application won't reach here until you exit and the event
     # loop has stopped.
