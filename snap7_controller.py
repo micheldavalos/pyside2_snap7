@@ -37,3 +37,10 @@ class Snap7:
         # print(contador)
         # logging.info(contador)
         return value
+
+    def read_plc_real(self, db, offset, size):
+        data = self.client.db_read(db, offset, size)
+        value = s7.get_real(data, 0)
+        # print(contador)
+        # logging.info(contador)
+        return value

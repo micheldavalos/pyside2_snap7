@@ -21,7 +21,6 @@ class MainWindow(QMainWindow):
 
         self.ui.pushButton_get_nombre.clicked.connect(self.get_nombre)
 
-
     def __connect(self):
         status = self.plc.connect()
         if status:
@@ -40,6 +39,11 @@ class MainWindow(QMainWindow):
         self.ui.lineEdit_nombre.setText(s)
 
     def read_data(self):
-        db, offset, size = 2, 16, 2
-        value = self.plc.read_plc_int(db, offset, size)
+        # contador variable from PLC
+        # db, offset, size = 2, 16, 2
+        # value = self.plc.read_plc_int(db, offset, size)
+
+        # i variable from PLC
+        db, offset, size = 2, 34, 4
+        value = self.plc.read_plc_real(db, offset, size)
         self.ui.lcdNumber.display(value)
