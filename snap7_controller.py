@@ -1,5 +1,5 @@
 import snap7
-from snap7.util import get_int, get_string, get_bool, get_real
+import snap7.util as s7
 import logging
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
@@ -24,3 +24,8 @@ class Snap7:
             logging.info("Connection fail")
             return False
 
+    def read_plc_string(self, db, offset, size):
+        data = self.client.db_read(db, offset, size)
+        s = s7.get_string(data, 0, size)
+        # logging.info(s)
+        return s
