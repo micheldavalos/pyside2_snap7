@@ -41,4 +41,5 @@ class MainWindow(QMainWindow):
 
     def read_data(self):
         db, offset, size = 2, 16, 2
-        print(self.plc.read_plc_int(db, offset, size))
+        value = self.plc.read_plc_int(db, offset, size)
+        self.ui.lcdNumber.display(value)
